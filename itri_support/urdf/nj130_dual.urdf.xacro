@@ -1,0 +1,115 @@
+<?xml version="1.0" ?>
+
+<robot name="nj130_daul" xmlns:xacro="http://ros.org/wiki/xacro">
+	<xacro:arg name="prefix_left" default="left_"/>
+	<xacro:arg name="prefix_right" default="right_"/>
+
+	<xacro:include filename="$(find itri_resources)/urdf/common_materials.xacro"/>
+	<!-- NJ130 -->
+	<xacro:include filename="$(find itri_support)/urdf/nj130/nj130_body.xacro"/>
+	<xacro:include filename="$(find itri_support)/urdf/nj130/nj130_gazebo.xacro"/>
+  	<xacro:include filename="$(find itri_support)/urdf/nj130/nj130_transmission.xacro"/>
+	<!-- Gripper -->
+	<xacro:include filename="$(find itri_support)/urdf/nj130/hand.xacro"/>
+
+	<!-- Place the stand in the world -->
+	<link name="world"/>
+	
+	<!-- Stand macros -->
+	<link name="stand1">
+		<visual>
+			<geometry>
+				<mesh filename="package://itri_support/meshes/nj130/stand_base.stl" scale="1.0 1.0 1.0"/>
+			</geometry>
+			<xacro:material_yellow/>
+		</visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://itri_support/meshes/nj130/stand_base.stl" scale="1.0 1.0 1.0"/>
+			</geometry>
+		</collision>
+	</link>
+	<link name="stand2">
+		<visual>
+			<geometry>
+				<mesh filename="package://itri_support/meshes/nj130/stand_base.stl" scale="1.0 1.0 1.0"/>
+			</geometry>
+			<xacro:material_yellow/>
+		</visual>
+		<collision>
+			<geometry>
+				<mesh filename="package://itri_support/meshes/nj130/stand_base.stl" scale="1.0 1.0 1.0"/>
+			</geometry>
+		</collision>
+	</link>
+
+	<!-- place world reference -->
+	<joint name="Base_to_stand1" type="fixed">
+		<parent link="world"/>
+		<child link="stand1"/>
+		<origin xyz="2.0 0 0.3" rpy="0 0 0"/>
+	</joint>
+	<joint name="Base_to_stand2" type="fixed">
+		<parent link="world"/>
+		<child link="stand2"/>
+		<origin xyz="-2.0 0 0.3" rpy="0 0 0"/>
+	</joint>
+
+	<!-- place NJ130 left arm    -->
+	<xacro:nj130 prefix="$(arg prefix_left)"/>
+	<joint name="stand2_to_left_arm" type="fixed">
+		<parent link="stand2"/>
+		<child link ="$(arg prefix_left)base_link"/>
+		<origin xyz="0 0 0.3" rpy="0 0 0"/>
+		<!-- limit effort="30.0" lower="-1.0" upper="1.0" velocity="0.3"/ -->
+	</joint>
+	<!-- end-effcetor -->
+	<xacro:hand prefix="$(arg prefix_left)" connected_to="$(arg prefix_left)flange"/>
+	<xacro:nj130_gazebo prefix="$(arg prefix_left)"/>
+	<xacro:nj130_transmission prefix="$(arg prefix_left)"/>
+
+	<!-- place NJ130 right arm    -->
+	<xacro:nj130 prefix="$(arg prefix_right)"/>
+	<joint name="stand1_to_right_arm" type="fixed">
+		<parent link="stand1"/>
+		<child link ="$(arg prefix_right)base_link"/>
+		<origin xyz="0 0 0.3" rpy="0 0 ${pi}"/>
+		<!-- limit effort="30.0" lower="-1.0" upper="1.0" velocity="0.3"/ -->
+	</joint>
+	<!-- end-effcetor -->
+	<xacro:hand prefix="$(arg prefix_right)" connected_to="$(arg prefix_right)flange"/>
+	<xacro:nj130_gazebo prefix="$(arg prefix_right)"/>
+	<xacro:nj130_transmission prefix="$(arg prefix_right)"/>
+
+	<!-- gazebo ros control -->
+	<gazebo>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+			<robotNamespace>/nj130_dual</robotNamespace>
+			<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      	<legacyModeNS>true</legacyModeNS>
+		</plugin>
+	</gazebo>
+
+	<!-- gazebo grasp fix plugin -->
+	<gazebo>
+    <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
+          <arm>
+            <arm_name>nj130_daul</arm_name>
+            <palm_link>$(arg prefix_left)link6</palm_link>
+            <gripper_link>$(arg prefix_left)leftfinger</gripper_link>
+            <gripper_link>$(arg prefix_left)rightfinger</gripper_link>
+				<palm_link>$(arg prefix_right)link6</palm_link>
+            <gripper_link>$(arg prefix_right)leftfinger</gripper_link>
+            <gripper_link>$(arg prefix_right)rightfinger</gripper_link>
+          </arm>
+        <forces_angle_tolerance>100</forces_angle_tolerance>
+        <update_rate>4</update_rate>
+        <grip_count_threshold>3</grip_count_threshold>
+        <max_grip_count>8</max_grip_count>
+        <release_tolerance>0.001</release_tolerance>
+        <disable_collisions_on_attach>false</disable_collisions_on_attach>
+        <contact_topic>__default_topic__</contact_topic>
+      </plugin>
+    </gazebo>
+	
+</robot>

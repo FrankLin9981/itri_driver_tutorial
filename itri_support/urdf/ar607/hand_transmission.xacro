@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="hand_transmission" params="prefix">
+    
+    <gazebo reference="${prefix}hand">
+      <self_collide>false</self_collide>
+    </gazebo>
+    <gazebo reference="${prefix}leftfinger">
+      <self_collide>true</self_collide>
+    </gazebo>
+    <gazebo reference="${prefix}rightfinger">
+      <self_collide>true</self_collide>
+    </gazebo>
+    <gazebo reference="${prefix}hand_joint">
+        <disableFixedJointLumping>true</disableFixedJointLumping>
+    </gazebo>
+
+    <transmission name="${prefix}finger_joint1_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}finger_joint1">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}finger_joint1_motor">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+    <transmission name="${prefix}finger_joint2_trans">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${prefix}finger_joint2">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="${prefix}finger_joint2_motor">
+        <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>
+    </transmission>
+
+  </xacro:macro>
+</robot>

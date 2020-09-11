@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: itri_support
+    relative_path: urdf/ar607.urdf.xacro
+    xacro_args: "--inorder "
+  SRDF:
+    relative_path: config/itri_ar607.srdf
+  CONFIG:
+    author_name: Frank
+    author_email: nevergiveup9981@gamil.com
+    generated_timestamp: 1583990438

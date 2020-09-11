@@ -1,0 +1,28 @@
+<launch>
+  <!-- By default we do not overwrite the URDF. Change the following to true to change the default behavior -->
+  <arg name="load_robot_description" default="false"/>
+
+  <!-- The name of the parameter under which the URDF is loaded -->
+  <arg name="robot_description" default="robot_description"/>
+
+  <!-- Use to determine which model should be loaded -->
+  <arg name="sensor_used" default="false"/>
+
+  <!-- Load universal robot description format (URDF) -->
+  <param if="$(arg load_robot_description)" name="$(arg robot_description)" command="xacro --inorder  '$(find itri_support)/urdf/ar607.urdf.xacro'"/>
+  <param if="$(arg sensor_used)" name="$(arg robot_description)" command="xacro --inorder  '$(find itri_support)/urdf/ar607_in_hand.urdf.xacro'"/>
+
+  <!-- The semantic description that corresponds to the URDF -->
+  <param name="$(arg robot_description)_semantic" textfile="$(find itri_ar607_moveit_config)/config/itri_ar607.srdf" />
+
+  <!-- Load updated joint limits (override information from URDF) -->
+  <group ns="$(arg robot_description)_planning">
+    <rosparam command="load" file="$(find itri_ar607_moveit_config)/config/joint_limits.yaml"/>
+  </group>
+
+  <!-- Load default settings for kinematics; these settings are overridden by settings in a node's namespace -->
+  <group ns="$(arg robot_description)_kinematics">
+    <rosparam command="load" file="$(find itri_ar607_moveit_config)/config/kinematics.yaml"/>
+  </group>
+
+</launch>

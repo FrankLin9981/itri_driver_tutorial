@@ -1,0 +1,41 @@
+<launch>
+
+  <!-- This launch file provides a socket-based connection to industrial robots
+       that implement the standard ROS Industrial simple_message protocol.
+	   *** Motion control is implemented by STREAMING path data to the robot ***
+           (for DOWNLOAD-based path-control, use a different launch file)
+
+       Several nodes are started, to supply both low-level robot communication
+       and higher-level actionlib support:
+         - robot_state : publishes current joint positions and robot state data
+         - motion_streaming_interface : command robot motion by sending motion points to robot
+         - joint_trajectory_action : actionlib interface to control robot motion
+
+    Usage:
+      robot_interface_streaming.launch robot_ip:=<value>
+  -->
+
+  <!-- <rosparam command="load" file="$(find dars_sj705_right_moveit_config)/config/joint_names.yaml"/> -->
+  <rosparam command="load" file="$(find itri_ar607_moveit_config)/config/joint_names.yaml"/>
+
+  <!-- robot_ip: IP-address of the robot's socket-messaging server -->
+  <arg name="robot_ip" doc="IP of controller" />
+  <arg name="robot_port" doc="Port of controller" default="11000" />
+  
+  <!-- copy the specified IP address to the Parameter Server, for use by nodes below -->
+  <param name="/robot_ip_address" type="str" value="$(arg robot_ip)"/>
+  <param name="~port" type="int" value="$(arg robot_port)"/>
+  
+  <!-- robot_state: publishes joint positions and robot-state data
+                   (from socket connection to robot) -->
+  <node pkg="itri_driver" type="itri_state_interface" name="itri_state_interface" output="screen"/>
+  
+  <!-- motion_streaming_interface: sends robot motion commands by STREAMING path to robot
+                                  (using socket connection to robot) -->
+  <node pkg="itri_driver" type="itri_motion_interface"
+        name="itri_motion_interface" output="screen"/>
+  
+  <!-- joint_trajectory_action: provides actionlib interface for high-level robot control -->
+  <node pkg="itri_driver" type="itri_trajectory_action" name="itri_trajectory_action" output="screen"/>
+
+</launch>

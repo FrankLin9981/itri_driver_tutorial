@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="itri_ar607_gazebo" params="prefix">
+    
+	 <gazebo reference="${prefix}base_link">
+	   <mu1>0.2</mu1>
+	   <mu2>0.2</mu2>
+	   <self_collide>true</self_collide>
+	 </gazebo>
+	 <gazebo reference="${prefix}link1">
+	   <mu1>0.2</mu1>
+	   <mu2>0.2</mu2>
+	   <self_collide>true</self_collide>
+	 </gazebo>
+	 <gazebo reference="${prefix}link2">
+	   <mu1>0.2</mu1>
+	   <mu2>0.2</mu2>
+	   <self_collide>true</self_collide>
+	 </gazebo>
+	 <gazebo reference="${prefix}link3">
+	   <mu1>0.2</mu1>
+	   <mu2>0.2</mu2>
+	   <self_collide>true</self_collide>
+	 </gazebo>
+	 <gazebo reference="${prefix}link4">
+	   <mu1>0.2</mu1>
+	   <mu2>0.2</mu2>
+	   <self_collide>true</self_collide>
+	 </gazebo>
+	 <gazebo reference="${prefix}link5">
+	   <mu1>0.2</mu1>
+	   <mu2>0.2</mu2>
+	   <self_collide>true</self_collide>
+	 </gazebo>
+	 <gazebo reference="${prefix}link6">
+	   <mu1>0.2</mu1>
+	   <mu2>0.2</mu2>
+	   <self_collide>true</self_collide>
+	 </gazebo>
+
+  </xacro:macro>
+</robot>

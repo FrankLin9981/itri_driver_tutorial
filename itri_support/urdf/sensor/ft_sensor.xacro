@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+<xacro:macro name="ft_sensor" params="prefix connected_to:='' rpy:='0 0 0' xyz:='0 0 0'">
+   
+   <link name="${prefix}ft_sensor_link">
+      <inertial>
+         <mass value="0.01" />
+         <origin xyz="0 0 0" rpy="0 0 0"/>
+         <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01" />
+      </inertial>
+      <collision>
+         <origin xyz="0 0 0" rpy="0 0 0"/>
+         <geometry>
+            <mesh filename="package://itri_support/meshes/sensor/ft_sensor.stl" scale="1.0 1.0 1.0"/>
+         </geometry>
+      </collision>
+      <visual> 
+         <origin xyz="0 0 0" rpy="0 0 0" />
+         <geometry>
+            <mesh filename="package://itri_support/meshes/sensor/ft_sensor.stl" scale="1.0 1.0 1.0"/>
+         </geometry>
+      </visual>
+   </link>
+   
+   <xacro:unless value="${connected_to == ''}">
+      <joint name="${prefix}ft_sensor_joint" type="fixed">
+         <parent link="${connected_to}"/>
+         <child link="${prefix}ft_sensor_link"/>
+         <origin xyz="${xyz}" rpy="${rpy}" />
+      </joint>
+   </xacro:unless>
+
+   <!-- Gazebo Tags -->
+   <xacro:arg name="gazebo" default="true"/>
+   <xacro:if value="$(arg gazebo)">
+      <xacro:include filename="$(find itri_support)/urdf/sensor/ft_sensor_gazebo.xacro"/>
+      <xacro:ft_sensor_gazebo prefix="${prefix}"/>
+   </xacro:if>
+
+</xacro:macro>
+</robot>

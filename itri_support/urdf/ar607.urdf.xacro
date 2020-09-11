@@ -1,0 +1,62 @@
+<?xml version="1.0" ?>
+
+<robot name="itri_ar607" xmlns:xacro="http://ros.org/wiki/xacro">
+	<xacro:arg name="prefix" default=""/>
+
+	<xacro:include filename="$(find itri_support)/urdf/ar607/ar607_body.xacro"/>
+	<xacro:include filename="$(find itri_support)/urdf/ar607/ar607_gazebo.xacro"/>
+  	<xacro:include filename="$(find itri_support)/urdf/ar607/ar607_transmission.xacro"/>
+	<xacro:include filename="$(find itri_support)/urdf/ar607/hand.xacro"/>
+	<xacro:include filename="$(find aruco_model_generation)/urdf/common/base_aruco_panel.urdf.xacro"/>
+	<xacro:itri_ar607 prefix="$(arg prefix)"/>
+	<xacro:itri_ar607_gazebo prefix="$(arg prefix)"/>
+	<xacro:itri_ar607_transmission prefix="$(arg prefix)"/>
+	
+	<!-- Aruco marker -->
+	<xacro:aruco_panel width="0.08" thickness="0.001" id="26"/>
+	<joint name="aruco_to_arm" type="fixed">
+		<origin xyz="0 -0.01 0.052" rpy="0 0 0"/>
+		<parent link="$(arg prefix)link5"/>
+		<child link="aruco_26_panel"/>
+	</joint>
+
+	<!-- ROS base_link to ITRI World Coordinates transform -->
+	<link name="world" />
+	<joint name="$(arg prefix)base_link-world" type="fixed">
+			<origin xyz="0 0 0" rpy="0 0 0"/>
+			<parent link="world"/>
+			<child link="$(arg prefix)base_link"/>
+	</joint>
+
+	<!-- end-effcetor -->
+	<xacro:hand prefix="$(arg prefix)" xyz="0 0 0.19" connected_to="link6"/>
+
+	<!-- gazebo ros control -->
+	<gazebo>
+		<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+			<robotNamespace>/ar607</robotNamespace>
+			<robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+      	<legacyModeNS>true</legacyModeNS>
+		</plugin>
+	</gazebo>
+
+	<!-- gazebo grasp fix plugin -->
+	<!-- <gazebo>
+    <plugin name="gazebo_grasp_fix" filename="libgazebo_grasp_fix.so">
+          <arm>
+            <arm_name>$(arg prefix)itri_ar607</arm_name>
+            <palm_link>$(arg prefix)hand</palm_link>
+            <gripper_link>$(arg prefix)leftfinger</gripper_link>
+            <gripper_link>$(arg prefix)rightfinger</gripper_link>
+          </arm>
+        <forces_angle_tolerance>90</forces_angle_tolerance>
+        <update_rate>10</update_rate>
+        <grip_count_threshold>3</grip_count_threshold>
+        <max_grip_count>8</max_grip_count>
+        <release_tolerance>0.001</release_tolerance>
+        <disable_collisions_on_attach>false</disable_collisions_on_attach>
+        <contact_topic>__default_topic__</contact_topic>
+      </plugin>
+    </gazebo> -->
+	
+</robot>

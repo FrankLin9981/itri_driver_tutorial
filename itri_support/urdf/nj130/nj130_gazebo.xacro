@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">  
+  <xacro:macro name="nj130_gazebo" params="prefix">
+    
+	 <gazebo reference="${prefix}base_link">
+	   <material>Gazebo/RedBright</material>
+	 </gazebo>
+	 <gazebo reference="${prefix}link1">
+	   <material>Gazebo/RedBright</material>
+	 </gazebo>
+	 <gazebo reference="${prefix}link2">
+	   <material>Gazebo/RedBright</material>
+	 </gazebo>
+	 <gazebo reference="${prefix}link3">
+	   <material>Gazebo/RedBright</material>
+	 </gazebo>
+	 <gazebo reference="${prefix}link4">
+	   <material>Gazebo/RedBright</material>
+	 </gazebo>
+	 <gazebo reference="${prefix}link5">
+	   <material>Gazebo/RedBright</material>
+	 </gazebo>
+	 <gazebo reference="${prefix}link6">
+	   <material>Gazebo/RedBright</material>
+	 </gazebo>
+
+  </xacro:macro>
+</robot>

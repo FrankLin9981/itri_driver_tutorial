@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<robot name="itri_ar607" xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- File Include -->
+  <xacro:include filename="$(find itri_support)/urdf/sensor/kinect.xacro"/>
+  <xacro:include filename="$(find itri_support)/urdf/ar607.urdf.xacro"/>
+  
+  <!-- add Kinect V2 -->
+  <!-- Link -->
+  <xacro:kinect2_link_box_v0 name="kinect2_link"/>
+  <link name="kinect2_rgb_optical_frame"/>
+  <!-- Joint -->
+  <joint name="joint_kinect2" type="fixed">
+    <origin rpy="0 ${pi/2} ${-pi/2}" xyz="0 0.6 1.0"/>
+    <parent link="world"/>
+    <child link="kinect2_link"/>
+  </joint>
+  <joint name="joint_rgb_kinect2" type="fixed">
+	  <origin rpy="${pi/2} ${pi} ${pi/2}"/>
+	  <parent link="kinect2_link"/>
+	  <child link="kinect2_rgb_optical_frame"/>
+  </joint>
+
+</robot>

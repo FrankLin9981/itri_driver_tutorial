@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<robot name="kinect" xmlns:xacro="http://ros.org/wiki/xacro">
+<xacro:macro name="kinect2_link_box_v0" params="name">
+
+  <link name="${name}">
+    <inertial>
+      <mass value="0.935"/>
+      <inertia ixx="0.0053937" ixy="0" ixz="0"
+        iyy="0.00085311" iyz="0"
+        izz="0.00519899" />
+    </inertial>
+    <visual>
+      <geometry>
+          <mesh filename="package://itri_support/meshes/sensor/kinect2.dae"/>
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.0"/>
+      <geometry>
+        <box size="0.065 0.25 0.082"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <!-- Gazebo Tags -->
+  <xacro:arg name="gazebo" default="true"/>
+  <xacro:if value="$(arg gazebo)">
+    <xacro:include filename="$(find itri_support)/urdf/sensor/kinect_gazebo.xacro"/>
+    <xacro:kinect_gazebo name="kinect2"/>
+  </xacro:if>
+
+</xacro:macro>
+</robot>
