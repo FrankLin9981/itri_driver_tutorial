@@ -14,8 +14,7 @@ Change to **0: [Ethernet Server] 命令通訊模式**.
 
 As shown in the following figure:
 
-.,d
-
+![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/ras_setting.png "Logo 標題文字 1")
 
 ## ITRI Driver Setting
 
