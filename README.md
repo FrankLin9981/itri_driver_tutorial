@@ -27,6 +27,8 @@ In the main function of ```itri_driver/src/itri_trajectory/action.cpp```, initia
 #### Update rate of robot states
 If you want to change the rate which the commands are sent to robot controller to get robot states, adjust the argumet passed to the constructor of ```ros::Rate```.
 
+The following code snippet is in ```itri_driver/src/itri_state_interface.cpp```.
+
 ![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/update_states_rate.png "update rate")
 
 #### Local ip
