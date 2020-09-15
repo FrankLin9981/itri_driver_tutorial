@@ -19,7 +19,7 @@ As shown in the following figure:
 ![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/ras_setting.png "Logo 標題文字 1")
 
 ### ITRI Driver Setting
-
+####
 
 ## Example
 Run the following command to connect to ITRI robot:
@@ -27,7 +27,7 @@ Run the following command to connect to ITRI robot:
 ```
 roslaunch itri_ar607_moveit_config moveit_planning_execution.launch robot_ip:=<your_robot_ip>
 ```
-### Plan trajectory by your own algorithm
+### Plan trajectory by your own algorithms
 ```
 roslaunch itri_driver itri_interface_streaming.launch robot_ip:=<your_robot_ip>
 ```
