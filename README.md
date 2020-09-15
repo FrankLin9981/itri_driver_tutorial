@@ -23,8 +23,13 @@ As shown in the following figure:
 
 ## Example
 Run the following command to connect to ITRI robot:
+### Use MoveIt! to do motion planning
 ```
 roslaunch itri_ar607_moveit_config moveit_planning_execution.launch robot_ip:=<your_robot_ip>
+```
+### Plan trajectory by your own algorithm
+```
+roslaunch itri_driver itri_interface_streaming.launch robot_ip:=<your_robot_ip>
 ```
 ```<your_robot_ip>``` is the IP of your ITRI robot controller. You can enter **ipconfig** in cmd to search the IP.
 
