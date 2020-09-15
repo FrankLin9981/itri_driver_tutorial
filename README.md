@@ -7,7 +7,17 @@ The tutorial about how to use ITRI ROS driver.
 - ...
 
 # Usage
-...
+## RAS Setting
+Set **"Port Number"** to **11000**.
+
+Change to **0: [Ethernet Server] 命令通訊模式**.
+
+As shown in the following figure:
+
+.,d
+
+
+## ITRI Driver Setting
 
 # Example
 ...
