@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.5.1-0-g916b5db  Build Version: 1.5.7152.31018
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="dars_sj705_right_v2" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <link
+    name="right_arm_base_link">
+    <inertial>
+      <origin
+        xyz="-0.000232318785578112 0.000416015424662894 0.0612685506045317"
+        rpy="0 0 0" />
+      <mass
+        value="1.12130208690655" />
+      <inertia
+        ixx="0.00286886307136703"
+        ixy="4.17544432151409E-05"
+        ixz="-9.93567541743646E-06"
+        iyy="0.0029383884751674"
+        iyz="1.77373992319681E-05"
+        izz="0.00302949300291083" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="right_arm_link1">
+    <inertial>
+      <origin
+        xyz="0.0220149261630286 0.00142034167800786 0.0193862748312547"
+        rpy="0 0 0" />
+      <mass
+        value="0.704732839762444" />
+      <inertia
+        ixx="0.000841245072195673"
+        ixy="-3.13917654602522E-05"
+        ixz="0.000242271053954912"
+        iyy="0.00130262300294707"
+        iyz="3.566707645658E-05"
+        izz="0.00144924276277079" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_arm_joint1"
+    type="revolute">
+    <origin
+      xyz="0 0 0.206"
+      rpy="1.5713 1.5708 0.00093827" />
+    <parent
+      link="right_arm_base_link" />
+    <child
+      link="right_arm_link1" />
+    <axis
+      xyz="-1 0 0" />
+
+    <limit
+      lower="-3.1416"
+      upper="3.1416"
+      effort="10"
+      velocity="0.791943" />
+
+  </joint>
+  <link
+    name="right_arm_link2">
+    <inertial>
+      <origin
+        xyz="-0.068378 0.00074558 -0.010176"
+        rpy="0 0 0" />
+      <mass
+        value="1.3425" />
+      <inertia
+        ixx="0.001824"
+        ixy="-1.5016E-05"
+        ixz="0.00087569"
+        iyy="0.0053618"
+        iyz="-2.6448E-05"
+        izz="0.0053833" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_arm_joint2"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="right_arm_link1" />
+    <child
+      link="right_arm_link2" />
+    <axis
+      xyz="0 0 -1" />
+
+    <limit lower="-${6.2832*0.125}" upper="${6.2832*0.25}" effort="10" velocity="0.791943" />
+  </joint>
+  <link
+    name="right_arm_link3">
+    <inertial>
+      <origin
+        xyz="0.0962526032515294 -0.000317619687560833 -0.00470771491343655"
+        rpy="0 0 0" />
+      <mass
+        value="1.07736180460667" />
+      <inertia
+        ixx="0.00117795652489407"
+        ixy="-1.84277576080779E-05"
+        ixz="-0.000469868856132839"
+        iyy="0.00458889628240855"
+        iyz="5.93124175129157E-06"
+        izz="0.00456075702329967" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_arm_joint3"
+    type="revolute">
+    <origin
+      xyz="-0.35 0 0"
+      rpy="3.1416 0 0" />
+    <parent
+      link="right_arm_link2" />
+    <child
+      link="right_arm_link3" />
+    <axis
+      xyz="-1 0 0" />
+    <limit lower="-${6.2832*0.5}" upper="${6.2832*0.5}" effort="10" velocity="1.2671" />
+  </joint>
+  <link
+    name="right_arm_link4">
+    <inertial>
+      <origin
+        xyz="-0.0525508055834947 -0.000565914838117354 0.00838965365584191"
+        rpy="0 0 0" />
+      <mass
+        value="0.604541213811193" />
+      <inertia
+        ixx="0.000479638230999798"
+        ixy="3.48005401093465E-06"
+        ixz="-0.000248216077247259"
+        iyy="0.00146664458124825"
+        iyz="-7.15931698888794E-06"
+        izz="0.00146411045849462" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_link4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_link4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_arm_joint4"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="right_arm_link3" />
+    <child
+      link="right_arm_link4" />
+    <axis
+      xyz="0 0 1" />
+
+    <limit lower="-${6.2832*0.125}" upper="${6.2832*0.25}" effort="10" velocity="1.5708" />
+  </joint>
+  <link
+    name="right_arm_link5">
+    <inertial>
+      <origin
+        xyz="0.0917180573564457 -0.00068276853809135 -0.00272802808810063"
+        rpy="0 0 0" />
+      <mass
+        value="0.583482841125641" />
+      <inertia
+        ixx="0.000460079671762739"
+        ixy="-1.20647843296169E-05"
+        ixz="-0.000205865954304475"
+        iyy="0.00220581180784235"
+        iyz="3.07542972072111E-06"
+        izz="0.00219279588550882" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_link5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_link5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_arm_joint5"
+    type="revolute">
+    <origin
+      xyz="-0.2845 0 -0.001"
+      rpy="0 0 0" />
+    <parent
+      link="right_arm_link4" />
+    <child
+      link="right_arm_link5" />
+    <axis
+      xyz="-1 0 0" />
+
+    <limit lower="-${6.2832*0.5}" upper="${6.2832*0.5}" effort="10" velocity="1.5708" />
+  </joint>
+  <link
+    name="right_arm_link6">
+    <inertial>
+      <origin
+        xyz="-0.0143927635876299 -0.000784906882398684 0.012778935820382"
+        rpy="0 0 0" />
+      <mass
+        value="0.182938662010819" />
+      <inertia
+        ixx="9.01095189121663E-05"
+        ixy="-2.75747911996583E-06"
+        ixz="-2.73704812549745E-05"
+        iyy="0.000140437660251869"
+        iyz="-3.25117318155308E-06"
+        izz="0.000150984184644799" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_link6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_link6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_arm_joint6"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="right_arm_link5" />
+    <child
+      link="right_arm_link6" />
+    <axis
+      xyz="0 0 1" />
+
+    <limit lower="-${6.2832*0.125}" upper="${6.2832*0.25}" effort="10" velocity="1.5708" />
+  </joint>
+  <link
+    name="right_arm_link7">
+    <inertial>
+      <origin
+        xyz="3.11470840513306E-05 -4.64463006477622E-06 0.0302070449645091"
+        rpy="0 0 0" />
+      <mass
+        value="0.188871414175569" />
+      <inertia
+        ixx="0.000110402713847328"
+        ixy="-1.36008744459275E-07"
+        ixz="1.43774227050942E-07"
+        iyy="0.000109141813922723"
+        iyz="-2.14696469760054E-08"
+        izz="8.96138601621845E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_link7.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_arm_link7.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_arm_joint7"
+    type="revolute">
+    <origin
+      xyz="-0.05 0 0"
+      rpy="-1.5708 0 1.5708" />
+    <parent
+      link="right_arm_link6" />
+    <child
+      link="right_arm_link7" />
+    <axis
+      xyz="0 0 1" />
+
+    <limit lower="-${6.2832*1}" upper="${6.2832*1}" effort="10" velocity="1.5708" />
+  </joint>
+  <link
+    name="right_EE_link">
+    <inertial>
+      <origin
+        xyz="0.000145304658732415 -0.000145305124990724 0.0265636911624656"
+        rpy="0 0 0" />
+      <mass
+        value="0.117155030983131" />
+      <inertia
+        ixx="9.19163408301501E-05"
+        ixy="-4.98698287549382E-07"
+        ixz="-7.21486726297052E-07"
+        iyy="9.12600356252085E-05"
+        iyz="7.21485968725767E-07"
+        izz="9.20675938750006E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_EE_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://dars_sj705_right_v2/meshes/right_EE_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_EE_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 0.0665"
+      rpy="0 0 0" />
+    <parent
+      link="right_arm_link7" />
+    <child
+      link="right_EE_link" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>

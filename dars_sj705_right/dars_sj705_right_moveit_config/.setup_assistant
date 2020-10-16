@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: dars_sj705_right_v2
+    relative_path: urdf/dars_sj705_right_v2.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/dars_sj705_right_v2.srdf
+  CONFIG:
+    author_name: Frank
+    author_email: nevergiveup9981@gmail.com
+    generated_timestamp: 1596683195

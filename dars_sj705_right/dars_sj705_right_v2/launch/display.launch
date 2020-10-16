@@ -1,0 +1,38 @@
+<launch>
+  <arg
+    name="model" />
+  <arg
+    name="gui"
+    default="False" />
+
+<!--
+  <param
+    name="robot_description"
+    textfile="$(find dars_sj705_right_v2)/urdf/dars_sj705_right_v2.urdf" />
+-->
+
+
+  <!-- Load the URDF into the ROS Parameter Server -->
+  <param name="robot_description"
+    command="$(find xacro)/xacro --inorder '$(find dars_sj705_right_v2)/urdf/dars_sj705_right_v2.xacro'" />
+
+  <node
+    name="joint_state_publisher_gui"
+    pkg="joint_state_publisher_gui"
+    type="joint_state_publisher_gui" >
+
+    <param name="use_gui" value="true"/>
+
+  </node>
+
+  <node
+    name="robot_state_publisher"
+    pkg="robot_state_publisher"
+    type="state_publisher" />
+  
+  <node
+    name="rviz"
+    pkg="rviz"
+    type="rviz"
+    args="-d $(find dars_sj705_right_v2)/config/rviz.rviz" />
+</launch>

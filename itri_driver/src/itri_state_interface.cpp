@@ -105,6 +105,7 @@ void ITRI_RobotStateInterface::spinonce()
     this->pub_joint_sensor_state_.publish(sensor_state);
   }
   // Get robot status
+  /*
   int curStatus;
   if(this->ras_client_.getRunStatus(&curStatus))
   {
@@ -113,11 +114,12 @@ void ITRI_RobotStateInterface::spinonce()
     robot_status.in_motion.val = curStatus;
     this->pub_robot_status_.publish(robot_status);
   }
+  */
 }
 
 void ITRI_RobotStateInterface::run()
 {
-  ros::Rate r(5);
+  ros::Rate r(10);
   while(ros::ok())
   {
     // TODO

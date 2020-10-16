@@ -15,7 +15,7 @@ namespace ras_client
 
 RAS_Client::RAS_Client()
 {
-  this->local_ip_ = "192.168.1.3";
+  this->local_ip_ = "192.168.2.3";
 }
 
 RAS_Client::~RAS_Client()
@@ -133,14 +133,18 @@ int RAS_Client::getCurDeg(std::vector<double>& pdAngle)
 {
   int rc = this->SOCKET_FAIL;
   char* recvBuff = new char [4096];
+  char* temp = new char [4096];
+  char* degBuff = new char [4096];
   std::string msg = "NETS_GETDEG " + this->local_ip_;
 
   if(this->rawSendBytes((char*)msg.c_str(), msg.size()+1)) {
     ROS_DEBUG("NETS_GETDEG sent to controller");
     // May need to set a timeout
+    
     if(rc = this->rawReceiveBytes(recvBuff, 4096)) {
       ROS_DEBUG("Receive %s from controller", recvBuff);
-      std::string str(recvBuff+4, rc-1);
+      // std::string str(recvBuff+4, rc-1);
+      std::string str(recvBuff, rc-1);
       std::stringstream ss(str);
       int count = 0;
       for(double ang; ss >> ang; ) {
@@ -153,6 +157,35 @@ int RAS_Client::getCurDeg(std::vector<double>& pdAngle)
     else
       ROS_WARN("Controller does not response to NETS_GETDEG");
   }
+    /*
+    while(true)
+    {
+      rc = RECV(this->getSockHandle(), recvBuff, 1, 0);
+      if(recvBuff[0] != '\0') {
+        temp += recvBuff[0];
+        std::cout << recvBuff[0];
+      }
+      else {
+        temp += recvBuff[0];
+        if(temp != "IRA\0") {
+          int i = 0;
+          for(size_t n = 0; n != sizeof(temp); n++) {
+            if(temp[n] != ' ' && temp[n] != ',' && temp[n] != '\0')
+              degBuff += recvBuff[n];
+            else {
+              pdAngle[i] = std::stoi(degBuff);
+              memset(degBuff, 0, 4096);
+              ++i;
+            }
+          }
+          break;  
+        }
+        else
+          memset(temp, 0, 4096);;
+      }
+    }
+  }
+  */
   else
     ROS_WARN("Failed sent NETS_GETDEG");
 
@@ -170,7 +203,9 @@ int RAS_Client::getRunStatus(int *pnStatus)
     // May need to set a timeout
     if(rc = this->rawReceiveBytes(recvBuff, 4096)) {
       ROS_DEBUG("Receive %s from controller", recvBuff);
-      std::string str(recvBuff+4, rc-1);
+      std::cout << "GetRun: " << recvBuff << std::endl;
+      // std::string str(recvBuff+4, rc-1);
+      std::string str(recvBuff, rc-1);
       *pnStatus = std::stoi(str);
     }
     else
@@ -182,6 +217,5 @@ int RAS_Client::getRunStatus(int *pnStatus)
   return rc;
 }
 
-} //tcp_client
-} //industrial
-
+} //ras_client
+} //itri_driver

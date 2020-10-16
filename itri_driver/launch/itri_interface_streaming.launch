@@ -15,8 +15,8 @@
       robot_interface_streaming.launch robot_ip:=<value>
   -->
 
-  <!-- <rosparam command="load" file="$(find dars_sj705_right_moveit_config)/config/joint_names.yaml"/> -->
-  <rosparam command="load" file="$(find itri_ar607_moveit_config)/config/joint_names.yaml"/>
+  <rosparam command="load" file="$(find dars_sj705_right_moveit_config)/config/joint_names.yaml"/>
+  <!-- <rosparam command="load" file="$(find itri_ar607_moveit_config)/config/joint_names.yaml"/> -->
 
   <!-- robot_ip: IP-address of the robot's socket-messaging server -->
   <arg name="robot_ip" doc="IP of controller" />

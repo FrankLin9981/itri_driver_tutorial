@@ -10,7 +10,7 @@ namespace itri_driver
 namespace itri_trajectory_action
 {
 
-const double ITRI_JointTrajectoryAction::WATCHDOG_PERIOD_ = 1.0;
+const double ITRI_JointTrajectoryAction::WATCHDOG_PERIOD_ = 1.5;
 const double ITRI_JointTrajectoryAction::DEFAULT_GOAL_THRESHOLD_ = 0.01;
 
 ITRI_JointTrajectoryAction::ITRI_JointTrajectoryAction(string name) :
@@ -33,6 +33,8 @@ ITRI_JointTrajectoryAction::ITRI_JointTrajectoryAction(string name) :
   pub_trajectory_command_ = node_.advertise<trajectory_msgs::JointTrajectory>("joint_path_command", 1);
   sub_trajectory_state_ = node_.subscribe("feedback_states", 1, &ITRI_JointTrajectoryAction::controllerStateCB, this);
   sub_robot_status_ = node_.subscribe("robot_status", 1, &ITRI_JointTrajectoryAction::robotStatusCB, this);
+
+  
 
   watchdog_timer_ = node_.createTimer(ros::Duration(WATCHDOG_PERIOD_), &ITRI_JointTrajectoryAction::watchdog, this, true);
   action_server_.start();
@@ -291,9 +293,9 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "itri_trajectory_action");
 
-  // ITRI_JointTrajectoryAction arm("/right_arm_controller/follow_joint_trajectory");
-  ITRI_JointTrajectoryAction arm("/ar607/ar607_controller/follow_joint_trajectory");
-  ITRI_JointTrajectoryAction hand("/ar607/hand_controller/follow_joint_trajectory");
+  ITRI_JointTrajectoryAction arm("/right_arm_controller/follow_joint_trajectory");
+  // ITRI_JointTrajectoryAction arm("/ar607/ar607_controller/follow_joint_trajectory");
+  // ITRI_JointTrajectoryAction hand("/ar607/hand_controller/follow_joint_trajectory");
   ros::spin();
 
   return 0;

@@ -226,7 +226,7 @@ void ITRI_JointTrajectoryStreamer::streamingThread()
       case TransferStates::IDLE:
         ros::Duration(0.010).sleep();  //  loop while waiting for new trajectory
         break;
-
+      /*
       case TransferStates::WAITING:        
         ros::Duration(0.5).sleep();
         if(this->last_robot_status_->in_motion.val == industrial_msgs::TriState::FALSE)
@@ -235,12 +235,13 @@ void ITRI_JointTrajectoryStreamer::streamingThread()
           this->state_ = TransferStates::IDLE;
         }
         break;
-
+      */
       case TransferStates::STREAMING:
         if (this->current_point_ >= (int)this->current_traj_.size())
         {
           ROS_INFO("Trajectory streaming complete, setting state to WAITING");
-          this->state_ = TransferStates::WAITING;
+          // this->state_ = TransferStates::WAITING;
+          this->state_ = TransferStates::IDLE;
           break;
         }
 
@@ -265,11 +266,13 @@ void ITRI_JointTrajectoryStreamer::streamingThread()
         {
           ROS_INFO("Trajectory sent to controller");
           // May need to set a timeout
+          /*
           if(this->ras_client_.rawReceiveBytes(recvBuff, 4096)) {
             ROS_DEBUG("Receive %s from controller", recvBuff);
           }
           else
             ROS_WARN("Controller does not response");
+          */
         }
         else
           ROS_WARN("Failed sent joint point, will try again");
@@ -307,7 +310,7 @@ void ITRI_JointTrajectoryStreamer::trajectoryStop()
       ROS_WARN("Controller does not response");
   }
   else
-    ROS_WARN("Failed sent joint point, will try again");
+    ROS_WARN("Failed sent stop signal");
 
 
   ROS_DEBUG("Stop command sent, entering idle mode");
