@@ -1,0 +1,5 @@
+dars_sj705_right/DARS_right_arm
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/DARS_right_arm/cmake.lock /home/frank/Desktop/itri_driver_tutorial/devel/./cmake.lock
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/DARS_right_arm/share/DARS_right_arm/cmake/DARS_right_armConfig-version.cmake /home/frank/Desktop/itri_driver_tutorial/devel/share/DARS_right_arm/cmake/DARS_right_armConfig-version.cmake
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/DARS_right_arm/share/DARS_right_arm/cmake/DARS_right_armConfig.cmake /home/frank/Desktop/itri_driver_tutorial/devel/share/DARS_right_arm/cmake/DARS_right_armConfig.cmake
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/DARS_right_arm/lib/pkgconfig/DARS_right_arm.pc /home/frank/Desktop/itri_driver_tutorial/devel/lib/pkgconfig/DARS_right_arm.pc

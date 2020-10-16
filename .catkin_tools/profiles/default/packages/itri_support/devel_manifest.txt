@@ -1,0 +1,5 @@
+itri_support
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_support/cmake.lock /home/frank/Desktop/itri_driver_tutorial/devel/./cmake.lock
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_support/share/itri_support/cmake/itri_supportConfig.cmake /home/frank/Desktop/itri_driver_tutorial/devel/share/itri_support/cmake/itri_supportConfig.cmake
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_support/share/itri_support/cmake/itri_supportConfig-version.cmake /home/frank/Desktop/itri_driver_tutorial/devel/share/itri_support/cmake/itri_supportConfig-version.cmake
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_support/lib/pkgconfig/itri_support.pc /home/frank/Desktop/itri_driver_tutorial/devel/lib/pkgconfig/itri_support.pc
