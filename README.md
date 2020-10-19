@@ -4,6 +4,7 @@ The tutorial about how to use ITRI ROS driver.
 ## Dependencies
 - [ROS Kinetic or Melodic](http://wiki.ros.org/ROS/Installation)
 - [MoveIt!](https://moveit.ros.org/install/)
+- [industrial_core](https://github.com/ros-industrial/industrial_core)
 - ...
 
 ## Usage
@@ -40,13 +41,25 @@ Ensure it is set correctly, or the feedback of robot states from ITRI controller
 
 ![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/local_ip.png "local ip")
 
+#### ROS Parameter: controller_joint_names
+Load the right controller_joint_names of the robot.
+
+In the launch file ```itri_driver/launch/itri_interface_streaming.launch```, load the correct ```joint_names.yaml``` based on the robot you used.
+
+![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/local_ip.png "local ip")
+
 Remember to **catkin_make** or **catkin build** before launching the driver if you do any modifications.
 
 ## Example
 Run the following command to connect to ITRI robot:
 ### Use MoveIt! to do motion planning
+#### AR605
 ```
 roslaunch itri_ar607_moveit_config moveit_planning_execution.launch robot_ip:=<your_robot_ip>
+```
+#### SJ705
+```
+roslaunch dars_sj705_right_moveit_config moveit_planning_execution.launch robot_ip:=<your_robot_ip>
 ```
 ### Plan trajectory by your own algorithms
 ```
