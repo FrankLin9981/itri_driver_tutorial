@@ -46,7 +46,7 @@ Load the right controller_joint_names of the robot.
 
 In the launch file ```itri_driver/launch/itri_interface_streaming.launch```, load the correct ```joint_names.yaml``` based on the robot you used.
 
-![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/local_ip.png "local ip")
+![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/controller_joint_names.png "controller joint names")
 
 Remember to **catkin_make** or **catkin build** before launching the driver if you do any modifications.
 
@@ -68,4 +68,4 @@ roslaunch itri_driver itri_interface_streaming.launch robot_ip:=<your_robot_ip>
 ```<your_robot_ip>``` is the IP of your ITRI robot controller. You can enter **ipconfig** in cmd to search the IP.
 
 ## Troubleshooting
-### ...
+### If you have any problems, feel free to open an issue.
