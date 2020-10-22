@@ -15,7 +15,7 @@ namespace ras_client
 
 RAS_Client::RAS_Client()
 {
-  this->local_ip_ = "192.168.2.3";
+  this->local_ip_ = "192.168.1.249";
 }
 
 RAS_Client::~RAS_Client()
@@ -133,59 +133,60 @@ int RAS_Client::getCurDeg(std::vector<double>& pdAngle)
 {
   int rc = this->SOCKET_FAIL;
   char* recvBuff = new char [4096];
-  char* temp = new char [4096];
-  char* degBuff = new char [4096];
   std::string msg = "NETS_GETDEG " + this->local_ip_;
+  std::string temp = "";
+  std::string degBuff = "";
 
   if(this->rawSendBytes((char*)msg.c_str(), msg.size()+1)) {
     ROS_DEBUG("NETS_GETDEG sent to controller");
     // May need to set a timeout
-    
+    /*
     if(rc = this->rawReceiveBytes(recvBuff, 4096)) {
       ROS_DEBUG("Receive %s from controller", recvBuff);
-      // std::string str(recvBuff+4, rc-1);
-      std::string str(recvBuff, rc-1);
+      std::string str(recvBuff+4, rc-1);
+      // std::string str(recvBuff, rc-1);
       std::stringstream ss(str);
       int count = 0;
       for(double ang; ss >> ang; ) {
+        if(count == 6)
+          break;        
         pdAngle[count] = DEG2RAD(ang);
         if (ss.peek() == ',')
-            ss.ignore();
+          ss.ignore();
         count++;
       }
     }
     else
       ROS_WARN("Controller does not response to NETS_GETDEG");
   }
-    /*
+    */
     while(true)
     {
       rc = RECV(this->getSockHandle(), recvBuff, 1, 0);
       if(recvBuff[0] != '\0') {
         temp += recvBuff[0];
-        std::cout << recvBuff[0];
       }
       else {
-        temp += recvBuff[0];
-        if(temp != "IRA\0") {
+        ROS_DEBUG("Receive %s from controller", temp.c_str());
+        if(temp != "IRA") {
           int i = 0;
-          for(size_t n = 0; n != sizeof(temp); n++) {
-            if(temp[n] != ' ' && temp[n] != ',' && temp[n] != '\0')
-              degBuff += recvBuff[n];
+          for(size_t n = 0; n != temp.size(); n++) {
+            if(temp[n] != ' ' && temp[n] != ',')
+              degBuff += temp[n];
             else {
-              pdAngle[i] = std::stoi(degBuff);
-              memset(degBuff, 0, 4096);
+              pdAngle[i] = DEG2RAD(std::stod(degBuff));
+              degBuff.clear();
               ++i;
             }
           }
+          pdAngle[i] = DEG2RAD(std::stod(degBuff));
           break;  
         }
         else
-          memset(temp, 0, 4096);;
+          temp.clear();
       }
     }
   }
-  */
   else
     ROS_WARN("Failed sent NETS_GETDEG");
 
@@ -197,10 +198,12 @@ int RAS_Client::getRunStatus(int *pnStatus)
   int rc = this->SOCKET_FAIL;
   char* recvBuff = new char [4096];
   std::string msg = "NETS_GETRUNSTATUS " + this->local_ip_;
+  std::string temp = "";
 
   if(this->rawSendBytes((char*)msg.c_str(), msg.size()+1)) {
     ROS_DEBUG("NETS_GETRUNSTATUS sent to controller");
     // May need to set a timeout
+    /*
     if(rc = this->rawReceiveBytes(recvBuff, 4096)) {
       ROS_DEBUG("Receive %s from controller", recvBuff);
       std::cout << "GetRun: " << recvBuff << std::endl;
@@ -210,6 +213,23 @@ int RAS_Client::getRunStatus(int *pnStatus)
     }
     else
       ROS_WARN("Controller does not response to NETS_GETRUNSTATUS");
+    */
+    while(true)
+    {
+      rc = RECV(this->getSockHandle(), recvBuff, 1, 0);
+      if(recvBuff[0] != '\0') {
+        temp += recvBuff[0];
+      }
+      else {
+        ROS_DEBUG("Receive %s from controller", temp.c_str());
+        if(temp != "IRA") {
+          *pnStatus = std::stoi(temp);
+          break;  
+        }
+        else
+          temp.clear();
+      }
+    }
   }
   else
     ROS_WARN("Failed sent NETS_GETRUNSTATUS");

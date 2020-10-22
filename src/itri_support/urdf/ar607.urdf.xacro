@@ -7,18 +7,18 @@
 	<xacro:include filename="$(find itri_support)/urdf/ar607/ar607_gazebo.xacro"/>
   	<xacro:include filename="$(find itri_support)/urdf/ar607/ar607_transmission.xacro"/>
 	<xacro:include filename="$(find itri_support)/urdf/ar607/hand.xacro"/>
-	<xacro:include filename="$(find aruco_model_generation)/urdf/common/base_aruco_panel.urdf.xacro"/>
+	<!-- <xacro:include filename="$(find aruco_model_generation)/urdf/common/base_aruco_panel.urdf.xacro"/> -->
 	<xacro:itri_ar607 prefix="$(arg prefix)"/>
 	<xacro:itri_ar607_gazebo prefix="$(arg prefix)"/>
 	<xacro:itri_ar607_transmission prefix="$(arg prefix)"/>
 	
 	<!-- Aruco marker -->
-	<xacro:aruco_panel width="0.08" thickness="0.001" id="26"/>
+	<!-- <xacro:aruco_panel width="0.08" thickness="0.001" id="26"/>
 	<joint name="aruco_to_arm" type="fixed">
 		<origin xyz="0 -0.01 0.052" rpy="0 0 0"/>
 		<parent link="$(arg prefix)link5"/>
 		<child link="aruco_26_panel"/>
-	</joint>
+	</joint> -->
 
 	<!-- ROS base_link to ITRI World Coordinates transform -->
 	<link name="world" />

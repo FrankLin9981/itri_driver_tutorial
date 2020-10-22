@@ -258,7 +258,7 @@ void ITRI_JointTrajectoryAction::abortGoal()
 }
 
 bool ITRI_JointTrajectoryAction::withinGoalConstraints(const control_msgs::FollowJointTrajectoryFeedbackConstPtr &msg,
-                                                  const trajectory_msgs::JointTrajectory & traj)
+                                                  const trajectory_msgs::JointTrajectory &traj)
 {
   bool rtn = false;
   if (traj.points.empty())
@@ -293,9 +293,9 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "itri_trajectory_action");
 
-  ITRI_JointTrajectoryAction arm("/right_arm_controller/follow_joint_trajectory");
-  // ITRI_JointTrajectoryAction arm("/ar607/ar607_controller/follow_joint_trajectory");
-  // ITRI_JointTrajectoryAction hand("/ar607/hand_controller/follow_joint_trajectory");
+  // ITRI_JointTrajectoryAction arm("/right_arm_controller/follow_joint_trajectory");
+  ITRI_JointTrajectoryAction arm("/ar607/ar607_controller/follow_joint_trajectory");
+  ITRI_JointTrajectoryAction hand("/ar607/hand_controller/follow_joint_trajectory");
   ros::spin();
 
   return 0;

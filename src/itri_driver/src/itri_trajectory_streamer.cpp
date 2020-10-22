@@ -226,7 +226,6 @@ void ITRI_JointTrajectoryStreamer::streamingThread()
       case TransferStates::IDLE:
         ros::Duration(0.010).sleep();  //  loop while waiting for new trajectory
         break;
-      /*
       case TransferStates::WAITING:        
         ros::Duration(0.5).sleep();
         if(this->last_robot_status_->in_motion.val == industrial_msgs::TriState::FALSE)
@@ -235,13 +234,11 @@ void ITRI_JointTrajectoryStreamer::streamingThread()
           this->state_ = TransferStates::IDLE;
         }
         break;
-      */
       case TransferStates::STREAMING:
         if (this->current_point_ >= (int)this->current_traj_.size())
         {
           ROS_INFO("Trajectory streaming complete, setting state to WAITING");
-          // this->state_ = TransferStates::WAITING;
-          this->state_ = TransferStates::IDLE;
+          this->state_ = TransferStates::WAITING;
           break;
         }
 
