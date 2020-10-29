@@ -43,6 +43,13 @@ bool RAS_Client::init(char *buff, int port_num)
     {
       LOG_WARN("Failed to set no socket delay, sending data can be delayed by up to 250ms");
     }
+    // Set RECV timeout
+    struct timeval timeout = {1, 0};
+    rc = setsockopt(this->getSockHandle(), SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout));
+    if (this->SOCKET_FAIL == rc)
+    {
+      LOG_WARN("Failed to set RECV timeout, this node may get stuck when failed to receive data");
+    }
 
     // Initialize address data structure
     memset(&this->sockaddr_, 0, sizeof(this->sockaddr_));
@@ -139,36 +146,27 @@ int RAS_Client::getCurDeg(std::vector<double>& pdAngle)
 
   if(this->rawSendBytes((char*)msg.c_str(), msg.size()+1)) {
     ROS_DEBUG("NETS_GETDEG sent to controller");
-    // May need to set a timeout
-    /*
-    if(rc = this->rawReceiveBytes(recvBuff, 4096)) {
-      ROS_DEBUG("Receive %s from controller", recvBuff);
-      std::string str(recvBuff+4, rc-1);
-      // std::string str(recvBuff, rc-1);
-      std::stringstream ss(str);
-      int count = 0;
-      for(double ang; ss >> ang; ) {
-        if(count == 6)
-          break;        
-        pdAngle[count] = DEG2RAD(ang);
-        if (ss.peek() == ',')
-          ss.ignore();
-        count++;
-      }
-    }
-    else
-      ROS_WARN("Controller does not response to NETS_GETDEG");
-  }
-    */
     while(true)
     {
       rc = RECV(this->getSockHandle(), recvBuff, 1, 0);
+      // Timeout detection
+      if(rc == -1 && errno == EAGAIN)
+      {
+        ROS_WARN("Timeout error: Receive no data in last 1 seconds");
+        break;
+      }
       if(recvBuff[0] != '\0') {
         temp += recvBuff[0];
       }
       else {
         ROS_DEBUG("Receive %s from controller", temp.c_str());
         if(temp != "IRA") {
+          // Avoid mess up the pattern
+          if(temp.size() < 5) {
+            temp.clear();            
+            continue;
+            return -1;
+          }
           int i = 0;
           for(size_t n = 0; n != temp.size(); n++) {
             if(temp[n] != ' ' && temp[n] != ',')
@@ -202,27 +200,26 @@ int RAS_Client::getRunStatus(int *pnStatus)
 
   if(this->rawSendBytes((char*)msg.c_str(), msg.size()+1)) {
     ROS_DEBUG("NETS_GETRUNSTATUS sent to controller");
-    // May need to set a timeout
-    /*
-    if(rc = this->rawReceiveBytes(recvBuff, 4096)) {
-      ROS_DEBUG("Receive %s from controller", recvBuff);
-      std::cout << "GetRun: " << recvBuff << std::endl;
-      // std::string str(recvBuff+4, rc-1);
-      std::string str(recvBuff, rc-1);
-      *pnStatus = std::stoi(str);
-    }
-    else
-      ROS_WARN("Controller does not response to NETS_GETRUNSTATUS");
-    */
     while(true)
     {
       rc = RECV(this->getSockHandle(), recvBuff, 1, 0);
+      if(rc == -1 && errno == EAGAIN)
+      {
+        ROS_WARN("Timeout error: Receive no data in last 1 seconds");
+        break;
+      }
       if(recvBuff[0] != '\0') {
         temp += recvBuff[0];
       }
       else {
         ROS_DEBUG("Receive %s from controller", temp.c_str());
         if(temp != "IRA") {
+          // Avoid mess up the pattern
+          if(temp.size() > 1) {
+            temp.clear();
+            continue;
+            return -1;
+          }
           *pnStatus = std::stoi(temp);
           break;  
         }

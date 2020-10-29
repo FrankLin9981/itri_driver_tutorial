@@ -96,7 +96,7 @@ void ITRI_RobotStateInterface::spinonce()
   // Get joint states
   std::vector<double> curDegs;
   curDegs.resize(this->joint_names_.size());
-  if(this->ras_client_.getCurDeg(curDegs))
+  if(this->ras_client_.getCurDeg(curDegs) != -1)
   {
     control_msgs::FollowJointTrajectoryFeedback control_state;
     sensor_msgs::JointState sensor_state;
@@ -106,7 +106,7 @@ void ITRI_RobotStateInterface::spinonce()
   }
   // Get robot status
   int curStatus;
-  if(this->ras_client_.getRunStatus(&curStatus))
+  if(this->ras_client_.getRunStatus(&curStatus) != -1)
   {
     industrial_msgs::RobotStatus robot_status;
     robot_status.header.stamp = ros::Time::now();
