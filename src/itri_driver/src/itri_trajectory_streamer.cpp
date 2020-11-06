@@ -247,7 +247,7 @@ void ITRI_JointTrajectoryStreamer::streamingThread()
         ros::Duration(0.010).sleep();  //  loop while waiting for new trajectory
         break;
       case TransferStates::WAITING:
-        ros::Duration(0.10).sleep();
+        ros::Duration(0.05).sleep();
         if(this->last_robot_status_->in_motion.val == industrial_msgs::TriState::FALSE)
         {
           ROS_INFO("Robot is not in motion, setting state to IDLE");

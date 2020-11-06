@@ -2,7 +2,7 @@ itri_driver
 /home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_driver/cmake.lock /home/frank/Desktop/itri_driver_tutorial/devel/./cmake.lock
 /home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_driver/share/itri_driver/cmake/itri_driverConfig.cmake /home/frank/Desktop/itri_driver_tutorial/devel/share/itri_driver/cmake/itri_driverConfig.cmake
 /home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_driver/share/itri_driver/cmake/itri_driverConfig-version.cmake /home/frank/Desktop/itri_driver_tutorial/devel/share/itri_driver/cmake/itri_driverConfig-version.cmake
-/home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_driver/lib/libras_client.so /home/frank/Desktop/itri_driver_tutorial/devel/lib/libras_client.so
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_driver/lib/libitri_robot_client.so /home/frank/Desktop/itri_driver_tutorial/devel/lib/libitri_robot_client.so
 /home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_driver/lib/itri_driver/itri_trajectory_action /home/frank/Desktop/itri_driver_tutorial/devel/lib/itri_driver/itri_trajectory_action
 /home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_driver/lib/itri_driver/itri_state_interface /home/frank/Desktop/itri_driver_tutorial/devel/lib/itri_driver/itri_state_interface
 /home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_driver/lib/itri_driver/moveit_action_server /home/frank/Desktop/itri_driver_tutorial/devel/lib/itri_driver/moveit_action_server

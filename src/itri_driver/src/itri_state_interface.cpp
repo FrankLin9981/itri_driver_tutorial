@@ -125,7 +125,7 @@ void ITRI_RobotStateInterface::spinonce()
 
 void ITRI_RobotStateInterface::run()
 {
-  ros::Rate r(50);
+  ros::Rate r(100);
   while(ros::ok())
   {
     // TODO

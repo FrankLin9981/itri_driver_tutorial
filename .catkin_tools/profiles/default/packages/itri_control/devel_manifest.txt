@@ -1,0 +1,7 @@
+itri_control
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_control/cmake.lock /home/frank/Desktop/itri_driver_tutorial/devel/./cmake.lock
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_control/share/itri_control/cmake/itri_controlConfig.cmake /home/frank/Desktop/itri_driver_tutorial/devel/share/itri_control/cmake/itri_controlConfig.cmake
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_control/share/itri_control/cmake/itri_controlConfig-version.cmake /home/frank/Desktop/itri_driver_tutorial/devel/share/itri_control/cmake/itri_controlConfig-version.cmake
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_control/lib/itri_control/itri_ar607_test /home/frank/Desktop/itri_driver_tutorial/devel/lib/itri_control/itri_ar607_test
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_control/lib/itri_control/nj130_test /home/frank/Desktop/itri_driver_tutorial/devel/lib/itri_control/nj130_test
+/home/frank/Desktop/itri_driver_tutorial/devel/.private/itri_control/lib/pkgconfig/itri_control.pc /home/frank/Desktop/itri_driver_tutorial/devel/lib/pkgconfig/itri_control.pc
