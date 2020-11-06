@@ -31,13 +31,6 @@ Remember to include this configuraion file in ```itri_driver/launch/itri_interfa
 
 ![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/load_rosparam.png "include config file")
 
-#### Update rate of robot states
-If you want to change the rate which the commands are sent to robot controller to get robot states, adjust the argumet passed to the constructor of ```ros::Rate```.
-
-The following code snippet is in ```itri_driver/src/itri_state_interface.cpp```.
-
-![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/update_states_rate.png "update rate")
-
 #### Local ip
 In ```itri_driver/src/ras_client.cpp```, there is a variable which specifies the ip of your local computer.
 
@@ -46,6 +39,17 @@ You can enter **ifconfig** in terminal to search.
 Ensure it is set correctly, or the feedback of robot states from ITRI controller could not be received.
 
 ![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/local_ip.png "local ip")
+
+If you forget to set the right local ip, you may see the following phenomenon.
+
+![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/timeout_error.png "timeout err")
+
+#### Update rate of robot states
+If you want to change the rate which the commands are sent to robot controller to get robot states, adjust the argumet passed to the constructor of ```ros::Rate```.
+
+The following code snippet is in ```itri_driver/src/itri_state_interface.cpp```. It can be up to **150 Hz**.
+
+![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/update_states_rate.png "update rate")
 
 Remember to **catkin_make** or **catkin build** before launching the driver if you do any modifications.
 
