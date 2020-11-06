@@ -25,11 +25,11 @@ In ```itri_driver/config``` directory, create your own **configuration file**.
 
 Inside the file, specify the **namespace**, **controller name**, **controller joint names**, **IP address**, and **port number** as shown below.
 
-![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/action_name.png "action name")
+![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/config_file.png "config file")
 
 Remember to include this configuraion file in ```itri_driver/launch/itri_interface_streaming.launch```.
 
-![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/action_name.png "action name")
+![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/load_rosparam.png "include config file")
 
 #### Update rate of robot states
 If you want to change the rate which the commands are sent to robot controller to get robot states, adjust the argumet passed to the constructor of ```ros::Rate```.
