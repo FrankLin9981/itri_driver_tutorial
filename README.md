@@ -20,8 +20,14 @@ As shown in the following figure:
 ![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/ras_setting.png "RAS interface")
 
 ### ITRI Driver Setting
-#### Action name
-In the main function of ```itri_driver/src/itri_trajectory/action.cpp```, initial the **action servers** with the correspoding action name.
+#### Action name & Controller joint names & IP address & Port number
+In ```itri_driver/config``` directory, create your own **configuration file**.
+
+Inside the file, specify the **namespace**, **controller name**, **controller joint names**, **IP address**, and **port number** as shown below.
+
+![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/action_name.png "action name")
+
+Remember to include this configuraion file in ```itri_driver/launch/itri_interface_streaming.launch```.
 
 ![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/action_name.png "action name")
 
@@ -41,13 +47,6 @@ Ensure it is set correctly, or the feedback of robot states from ITRI controller
 
 ![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/local_ip.png "local ip")
 
-#### ROS Parameter: controller_joint_names
-Load the right controller_joint_names of the robot.
-
-In the launch file ```itri_driver/launch/itri_interface_streaming.launch```, load the correct ```joint_names.yaml``` based on the robot you used.
-
-![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/controller_joint_names.png "controller joint names")
-
 Remember to **catkin_make** or **catkin build** before launching the driver if you do any modifications.
 
 ## Example
@@ -55,15 +54,19 @@ Run the following command to connect to ITRI robot:
 ### Use MoveIt! to do motion planning
 #### AR605
 ```
-roslaunch itri_ar607_moveit_config moveit_planning_execution.launch robot_ip:=<your_robot_ip>
+roslaunch itri_ar607_moveit_config moveit_planning_execution.launch
 ```
 #### SJ705
 ```
-roslaunch dars_sj705_right_moveit_config moveit_planning_execution.launch robot_ip:=<your_robot_ip>
+roslaunch dars_sj705_right_moveit_config moveit_planning_execution.launch
+```
+#### Dual SJ705
+```
+roslaunch dars_sj705_right_moveit_config moveit_planning_execution_multi.launch
 ```
 ### Plan trajectory by your own algorithms
 ```
-roslaunch itri_driver itri_interface_streaming.launch robot_ip:=<your_robot_ip>
+roslaunch itri_driver itri_interface_streaming.launch
 ```
 ```<your_robot_ip>``` is the IP of your ITRI robot controller. You can enter **ipconfig** in cmd to search the IP.
 
