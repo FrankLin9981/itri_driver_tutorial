@@ -21,7 +21,7 @@ As shown in the following figure:
 
 ### ITRI Driver Setting
 #### Action name & Controller joint names & IP address & Port number
-In ```itri_driver/config``` directory, create your own **configuration file**.
+In ```itri_driver/config``` directory, create your own **configuration file**. It's **very important**!
 
 Inside the file, specify the **namespace**, **controller name**, **controller joint names**, **IP address**, and **port number** as shown below.
 
@@ -31,13 +31,6 @@ Remember to include this configuraion file in ```itri_driver/launch/itri_interfa
 
 ![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/load_rosparam.png "include config file")
 
-#### Update rate of robot states
-If you want to change the rate which the commands are sent to robot controller to get robot states, adjust the argumet passed to the constructor of ```ros::Rate```.
-
-The following code snippet is in ```itri_driver/src/itri_state_interface.cpp```.
-
-![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/update_states_rate.png "update rate")
-
 #### Local ip
 In ```itri_driver/src/ras_client.cpp```, there is a variable which specifies the ip of your local computer.
 
@@ -46,6 +39,17 @@ You can enter **ifconfig** in terminal to search.
 Ensure it is set correctly, or the feedback of robot states from ITRI controller could not be received.
 
 ![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/local_ip.png "local ip")
+
+If you forget to set the right local ip, you may see the following phenomenon.
+
+![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/timeout_error.png "timeout err")
+
+#### Update rate of robot states
+If you want to change the rate which the commands are sent to robot controller to get robot states, adjust the argumet passed to the constructor of ```ros::Rate```.
+
+The following code snippet is in ```itri_driver/src/itri_state_interface.cpp```. It can be up to **150 Hz**.
+
+![alt 文字](https://github.com/FrankLin9981/itri_driver_tutorial/blob/master/images/update_states_rate.png "update rate")
 
 Remember to **catkin_make** or **catkin build** before launching the driver if you do any modifications.
 
@@ -68,7 +72,6 @@ roslaunch dars_sj705_right_moveit_config moveit_planning_execution_multi.launch
 ```
 roslaunch itri_driver itri_interface_streaming.launch
 ```
-```<your_robot_ip>``` is the IP of your ITRI robot controller. You can enter **ipconfig** in cmd to search the IP.
 
 ## Troubleshooting
 ### If you have any problems, feel free to open an issue.
