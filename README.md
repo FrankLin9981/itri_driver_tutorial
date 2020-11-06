@@ -21,7 +21,7 @@ As shown in the following figure:
 
 ### ITRI Driver Setting
 #### Action name & Controller joint names & IP address & Port number
-In ```itri_driver/config``` directory, create your own **configuration file**.
+In ```itri_driver/config``` directory, create your own **configuration file**. It's **very important**!
 
 Inside the file, specify the **namespace**, **controller name**, **controller joint names**, **IP address**, and **port number** as shown below.
 
@@ -72,7 +72,6 @@ roslaunch dars_sj705_right_moveit_config moveit_planning_execution_multi.launch
 ```
 roslaunch itri_driver itri_interface_streaming.launch
 ```
-```<your_robot_ip>``` is the IP of your ITRI robot controller. You can enter **ipconfig** in cmd to search the IP.
 
 ## Troubleshooting
 ### If you have any problems, feel free to open an issue.
