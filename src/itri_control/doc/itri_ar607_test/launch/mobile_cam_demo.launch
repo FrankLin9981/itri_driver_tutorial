@@ -1,0 +1,6 @@
+<launch>
+
+  <node pkg="itri_control" name="mobile_cam" type="active_vision.py" output="screen"/>
+  <node pkg="itri_control" name="ar607_data" type="ar607_dataSubscriber.py" output="screen"/>
+
+</launch>

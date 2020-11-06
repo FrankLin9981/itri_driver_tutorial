@@ -16,15 +16,16 @@
   -->
 
   <!-- <rosparam command="load" file="$(find dars_sj705_right_moveit_config)/config/joint_names.yaml"/> -->
-  <rosparam command="load" file="$(find itri_ar607_moveit_config)/config/joint_names.yaml"/>
+  <!-- <rosparam command="load" file="$(find itri_driver)/config/ar607_motion_interface.yaml"/> -->
+  <rosparam command="load" file="$(find itri_driver)/config/sj705_motion_interface.yaml"/>
 
   <!-- robot_ip: IP-address of the robot's socket-messaging server -->
-  <arg name="robot_ip" doc="IP of controller" />
-  <arg name="robot_port" doc="Port of controller" default="11000" />
+  <!-- <arg name="robot_ip" doc="IP of controller" /> -->
+  <!-- <arg name="robot_port" doc="Port of controller" default="11000" /> -->
   
   <!-- copy the specified IP address to the Parameter Server, for use by nodes below -->
-  <param name="/robot_ip_address" type="str" value="$(arg robot_ip)"/>
-  <param name="~port" type="int" value="$(arg robot_port)"/>
+  <!-- <param name="/robot_ip_address" type="str" value="$(arg robot_ip)"/> -->
+  <!-- <param name="~port" type="int" value="$(arg robot_port)"/> -->
   
   <!-- robot_state: publishes joint positions and robot-state data
                    (from socket connection to robot) -->
@@ -32,8 +33,7 @@
   
   <!-- motion_streaming_interface: sends robot motion commands by STREAMING path to robot
                                   (using socket connection to robot) -->
-  <node pkg="itri_driver" type="itri_motion_interface"
-        name="itri_motion_interface" output="screen"/>
+  <node pkg="itri_driver" type="itri_motion_interface" name="itri_motion_interface" output="screen"/>
   
   <!-- joint_trajectory_action: provides actionlib interface for high-level robot control -->
   <node pkg="itri_driver" type="itri_trajectory_action" name="itri_trajectory_action" output="screen"/>

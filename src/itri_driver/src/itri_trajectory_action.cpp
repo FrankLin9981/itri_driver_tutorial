@@ -1,9 +1,11 @@
 #include <itri_driver/itri_trajectory_action.h>
+#include <itri_driver/itri_utils.h>
 #include <industrial_robot_client/utils.h>
 #include <industrial_utils/param_utils.h>
 #include <industrial_utils/utils.h>
 
 using namespace std;
+using itri_driver::itri_utils::getJointGroups;
 
 namespace itri_driver
 {
@@ -13,28 +15,28 @@ namespace itri_trajectory_action
 const double ITRI_JointTrajectoryAction::WATCHDOG_PERIOD_ = 1.5;
 const double ITRI_JointTrajectoryAction::DEFAULT_GOAL_THRESHOLD_ = 0.01;
 
-ITRI_JointTrajectoryAction::ITRI_JointTrajectoryAction(string name) :
-    action_server_(node_, name, boost::bind(&ITRI_JointTrajectoryAction::goalCB, this, _1),
-                   boost::bind(&ITRI_JointTrajectoryAction::cancelCB, this, _1), false), has_active_goal_(false),
-                   controller_alive_(false), has_moved_once_(false), name_(name)
+ITRI_JointTrajectoryAction::ITRI_JointTrajectoryAction(string ns, string name, vector<string> joints) :
+    action_server_(node_, ns + "/" + name + "/" + "follow_joint_trajectory",
+                   boost::bind(&ITRI_JointTrajectoryAction::goalCB, this, _1),
+                   boost::bind(&ITRI_JointTrajectoryAction::cancelCB, this, _1), false),
+                   has_active_goal_(false), controller_alive_(false), has_moved_once_(false), name_(name),
+                   joint_names_(joints)
 {
   ros::NodeHandle pn("~");
 
   pn.param("constraints/goal_threshold", goal_threshold_, DEFAULT_GOAL_THRESHOLD_);
 
-  if (!industrial_utils::param::getJointNames("controller_joint_names", "robot_description", joint_names_))
-    ROS_ERROR_NAMED(name_, "Failed to initialize joint_names.");
+  // if (!industrial_utils::param::getListParam("topic_list/" + ns + "/" + name + "/joints", joint_names_))
+  //   ROS_ERROR_NAMED(name_, "Failed to initialize joint_names.");
 
   // The controller joint names parameter includes empty joint names for those joints not supported
   // by the controller.  These are removed since the trajectory action should ignore these.
   std::remove(joint_names_.begin(), joint_names_.end(), std::string());
   ROS_INFO_STREAM_NAMED(name_, "Filtered joint names to " << joint_names_.size() << " joints");
 
-  pub_trajectory_command_ = node_.advertise<trajectory_msgs::JointTrajectory>("joint_path_command", 1);
-  sub_trajectory_state_ = node_.subscribe("feedback_states", 1, &ITRI_JointTrajectoryAction::controllerStateCB, this);
-  sub_robot_status_ = node_.subscribe("robot_status", 1, &ITRI_JointTrajectoryAction::robotStatusCB, this);
-
-  
+  pub_trajectory_command_ = node_.advertise<trajectory_msgs::JointTrajectory>(ns + "/" + name + "/joint_path_command", 1);
+  sub_trajectory_state_ = node_.subscribe(ns + "/" + name + "/feedback_states", 1, &ITRI_JointTrajectoryAction::controllerStateCB, this);
+  sub_robot_status_ = node_.subscribe(ns + "/" + name + "/robot_status", 1, &ITRI_JointTrajectoryAction::robotStatusCB, this);
 
   watchdog_timer_ = node_.createTimer(ros::Duration(WATCHDOG_PERIOD_), &ITRI_JointTrajectoryAction::watchdog, this, true);
   action_server_.start();
@@ -293,9 +295,18 @@ int main(int argc, char** argv)
 {
   ros::init(argc, argv, "itri_trajectory_action");
 
-  // ITRI_JointTrajectoryAction arm("/right_arm_controller/follow_joint_trajectory");
-  ITRI_JointTrajectoryAction arm("/ar607/ar607_controller/follow_joint_trajectory");
-  ITRI_JointTrajectoryAction hand("/ar607/hand_controller/follow_joint_trajectory");
+  std::map<int, RobotGroup> robot_groups;
+  getJointGroups("topic_list", robot_groups);
+
+  for (int i = 0; i < robot_groups.size(); i++)
+  {
+    new ITRI_JointTrajectoryAction(robot_groups[i].get_ns(), robot_groups[i].get_name(), robot_groups[i].get_joint_names());
+  }
+
+  // ITRI_JointTrajectoryAction arm("", "right_arm_controller");
+  // ITRI_JointTrajectoryAction arm("ar607", "ar607_controller");
+  // ITRI_JointTrajectoryAction hand("ar607", "hand_controller");
+
   ros::spin();
 
   return 0;

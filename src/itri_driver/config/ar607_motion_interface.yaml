@@ -1,0 +1,15 @@
+topic_list:
+    - name: grinding_controller
+      ns: ar607
+      group: 0
+      ip: 192.168.1.11
+      port: 11000
+      joints: [joint1, joint2, joint3, joint4, joint5, joint6]
+    - name: virtual_controller
+      ns: ar607
+      group: 1
+      ip: 192.168.1.159
+      port: 11000
+      joints: [joint1, joint2, joint3, joint4, joint5, joint6]
+
+#　Add robot_ip here

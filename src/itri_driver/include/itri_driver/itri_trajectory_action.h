@@ -22,7 +22,7 @@ public:
    * \brief Constructor
    *
    */
-  ITRI_JointTrajectoryAction(std::string name="joint_trajectory_action");
+  ITRI_JointTrajectoryAction(std::string ns="", std::string name="", std::vector<std::string> joints=std::vector<std::string>());
 
   /**
    * \brief Destructor

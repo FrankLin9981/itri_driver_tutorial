@@ -1,0 +1,18 @@
+<launch>
+
+    <include file="$(find aruco_ros)/launch/single.launch">
+        <arg name="markerId"          value="26"/>
+        <arg name="markerSize"        value="0.08"/>    <!-- in m -->
+        <arg name="eye"               value="kinect2"/>
+        <arg name="marker_frame"      value="aruco_26_panel"/>
+        <arg name="ref_frame"         value="/world"/>  <!-- leave empty and the pose will be published wrt param parent_name -->
+        <arg name="corner_refinement" value="LINES" /> <!-- NONE, HARRIS, LINES, SUBPIX -->
+    </include>
+
+    <!-- Data subscriber -->
+    <node pkg="aruco_ros" type="artag_dataSubscriber.py" name="artag_data" output="screen" />
+    <node pkg="moveit_tutorials" type="ar607_dataSubscriber.py" name="ar607_data" output="screen"/>
+    <!-- Task node -->
+    <node pkg="moveit_tutorials" type="grasping_demo.py" name="grasping_demo" output="screen"/>
+
+</launch>

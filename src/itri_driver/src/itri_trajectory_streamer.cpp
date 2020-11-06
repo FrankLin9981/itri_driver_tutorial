@@ -1,10 +1,12 @@
 #include "itri_driver/itri_trajectory_streamer.h"
+#include <itri_driver/itri_utils.h>
 #include "industrial_utils/param_utils.h"
 
 #define RAD2DEG(rad) rad*180/M_PI
 
 using namespace industrial_utils::param;
 using industrial::simple_message::SimpleMessage;
+using itri_driver::itri_utils::getJointGroups;
 typedef trajectory_msgs::JointTrajectoryPoint  ros_JointTrajPt;
 
 namespace itri_driver
@@ -14,12 +16,12 @@ namespace itri_trajectory_streamer
 
 bool ITRI_JointTrajectoryStreamer::init(std::string default_ip, int default_port)
 {
-  std::string ip;
-  int port;
+  std::string ip = default_ip;
+  int port = default_port;
 
   // override IP/port with ROS params, if available
-  ros::param::param<std::string>("robot_ip_address", ip, default_ip);
-  ros::param::param<int>("~port", port, default_port);
+  // ros::param::param<std::string>("robot_ip_address", ip, default_ip);
+  // ros::param::param<int>("~port", port, default_port);
 
   // check for valid parameter values
   if (ip.empty())
@@ -43,14 +45,19 @@ bool ITRI_JointTrajectoryStreamer::init(std::string default_ip, int default_port
 
 bool ITRI_JointTrajectoryStreamer::init(SmplMsgConnection* connection)
 {
-  std::vector<std::string> joint_names;
-  if (!getJointNames("controller_joint_names", "robot_description", joint_names))
+  // std::vector<std::string> joint_names;
+  // if (!getJointNames("controller_joint_names", "robot_description", joint_names))
+  // {
+  //   ROS_ERROR("Failed to initialize joint_names.  Aborting");
+  //   return false;
+  // }
+
+  if(this->joint_names_.size() == 0)
   {
-    ROS_ERROR("Failed to initialize joint_names.  Aborting");
-    return false;
+    ROS_ERROR("Failed to initialize joint names. Aborting");
   }
 
-  return init(connection, joint_names);
+  return init(connection, this->joint_names_);
 }
 
 bool ITRI_JointTrajectoryStreamer::init(SmplMsgConnection* connection, const std::vector<std::string> &joint_names,
@@ -60,8 +67,21 @@ bool ITRI_JointTrajectoryStreamer::init(SmplMsgConnection* connection, const std
 
   ROS_INFO("JointTrajectoryStreamer: init");
 
-  rtn &= JointTrajectoryInterface::init(connection, joint_names, velocity_limits);
-  this->sub_robot_status_ = node_.subscribe("robot_status", 1, &ITRI_JointTrajectoryStreamer::robotStatusCB, this);
+  this->connection_ = connection;
+  this->all_joint_names_ = joint_names;
+  this->joint_vel_limits_ = velocity_limits;
+  connection_->makeConnect();
+
+  // try to read velocity limits from URDF, if none specified
+  if (joint_vel_limits_.empty() && !industrial_utils::param::getJointVelocityLimits("robot_description", joint_vel_limits_))
+    ROS_WARN("Unable to read velocity limits from 'robot_description' param.  Velocity validation disabled.");
+
+  // TODO: Create some services
+  // this->srv_stop_motion_ = this->node_.advertiseService(ns_ + "/" + name_ + "/stop_motion", &ITRI_JointTrajectoryStreamer::stopMotionCB, this);
+  // this->srv_joint_trajectory_ = this->node_.advertiseService(ns_ + "/" + name_ + "/joint_path_command", &ITRI_JointTrajectoryStreamer::jointTrajectoryCB, this);
+  this->sub_joint_trajectory_ = this->node_.subscribe(ns_ + "/" + name_ + "/joint_path_command", 0, &ITRI_JointTrajectoryStreamer::jointTrajectoryCB, this);
+  this->sub_robot_status_ = node_.subscribe(ns_ + "/" + name_ + "/robot_status", 1, &ITRI_JointTrajectoryStreamer::robotStatusCB, this);
+  this->sub_cur_pos_ = this->node_.subscribe(ns_ + "/joint_states", 1, &ITRI_JointTrajectoryStreamer::jointStateCB, this);
 
   this->mutex_.lock();
   this->current_point_ = 0;
@@ -192,7 +212,7 @@ std::string ITRI_JointTrajectoryStreamer::create_message(int seq, std::vector<do
 void ITRI_JointTrajectoryStreamer::streamingThread()
 {
   std::string jtpMsg = "";
-  int connectRetryCount = 1;
+  int connectRetryCount = 0;
   int timoutCount = 0;
 
   ROS_INFO("Starting joint trajectory streamer thread");
@@ -226,8 +246,8 @@ void ITRI_JointTrajectoryStreamer::streamingThread()
       case TransferStates::IDLE:
         ros::Duration(0.010).sleep();  //  loop while waiting for new trajectory
         break;
-      case TransferStates::WAITING:        
-        ros::Duration(0.5).sleep();
+      case TransferStates::WAITING:
+        ros::Duration(0.10).sleep();
         if(this->last_robot_status_->in_motion.val == industrial_msgs::TriState::FALSE)
         {
           ROS_INFO("Robot is not in motion, setting state to IDLE");
@@ -316,6 +336,12 @@ void ITRI_JointTrajectoryStreamer::trajectoryStop()
   delete [] recvBuff;
 }
 
+// copy robot JointState into local cache
+void ITRI_JointTrajectoryStreamer::jointStateCB(const sensor_msgs::JointStateConstPtr &msg)
+{
+  this->cur_joint_pos_ = *msg;
+}
+
 } //itri_trajectory_streamer
 } //itri_driver
 
@@ -326,10 +352,26 @@ int main(int argc, char** argv)
   // initialize node
   ros::init(argc, argv, "itri_motion_interface");
 
+  std::map<int, RobotGroup> robot_groups;
+  getJointGroups("topic_list", robot_groups);
+
+  bool rtn = true;
+
+  for (int i = 0; i < robot_groups.size(); i++)
+  {
+    ITRI_JointTrajectoryStreamer* motionInterface
+      = new ITRI_JointTrajectoryStreamer(robot_groups[i].get_ns(), robot_groups[i].get_name(), robot_groups[i].get_joint_names());
+    rtn &= motionInterface->init(robot_groups[i].get_ip(), robot_groups[i].get_port());
+  }
+
   // launch the default JointTrajectoryStreamer connection/handlers
-  ITRI_JointTrajectoryStreamer motionInterface;
-  motionInterface.init();
-  motionInterface.run();
+  // ITRI_JointTrajectoryStreamer motionInterface;
+  // motionInterface.init();
+  
+  if(rtn)
+  {
+    ros::spin();  
+  }
 
   return 0;
 }

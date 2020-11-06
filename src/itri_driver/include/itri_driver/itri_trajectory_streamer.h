@@ -51,7 +51,9 @@ public:
    * \param min_buffer_size minimum number of points as required by robot implementation
    */
   ITRI_JointTrajectoryStreamer(int min_buffer_size = 1) : min_buffer_size_(min_buffer_size) {};
-  
+  ITRI_JointTrajectoryStreamer(std::string ns="", std::string name="", std::vector<std::string> joints=std::vector<std::string>(), int min_buffer_size = 1)
+                              : ns_(ns), name_(name), joint_names_(joints), min_buffer_size_(min_buffer_size) {};
+
   /**
    * \brief Class initializer
    *
@@ -65,15 +67,17 @@ public:
    * \return true on success, false otherwise (an invalid message type)
    */
   virtual bool init(SmplMsgConnection* connection, const std::vector<std::string> &joint_names,
-                    const std::map<std::string, double> &velocity_limits = std::map<std::string, double>());
-  virtual bool init(std::string default_ip = "", int default_port = StandardSocketPorts::MOTION);
-  virtual bool init(SmplMsgConnection* connection);
+                    const std::map<std::string, double> &velocity_limits = std::map<std::string, double>()) override;
+  virtual bool init(std::string default_ip = "", int default_port = StandardSocketPorts::MOTION) override;
+  virtual bool init(SmplMsgConnection* connection) override;
 
   ~ITRI_JointTrajectoryStreamer();
 
   void robotStatusCB(const industrial_msgs::RobotStatusConstPtr &msg);
 
-  virtual void jointTrajectoryCB(const trajectory_msgs::JointTrajectoryConstPtr &msg);
+  virtual void jointTrajectoryCB(const trajectory_msgs::JointTrajectoryConstPtr &msg) override;
+  
+  virtual void jointStateCB(const sensor_msgs::JointStateConstPtr &msg) override;
 
   bool trajectory_to_msgs(const trajectory_msgs::JointTrajectoryConstPtr &traj, std::vector<std::string>* msgs);
   
@@ -99,6 +103,9 @@ protected:
   TransferState state_;
   ros::Time streaming_start_;
   int min_buffer_size_;
+  std::string ns_;
+  std::string name_;
+  std::vector<std::string> joint_names_;
 };
 
 } //itri_trajectory_streamer

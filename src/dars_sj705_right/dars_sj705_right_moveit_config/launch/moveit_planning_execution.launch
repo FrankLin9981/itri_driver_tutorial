@@ -1,8 +1,7 @@
 <launch>
 	<arg name="sim" default="false" />
-	<arg name="robot_ip" unless="$(arg sim)" default="" doc="IP of controller" />
-  	<arg name="robot_port" unless="$(arg sim)" default="11000" doc="Port of controller" />
-    
+	<!-- <arg name="robot_ip" unless="$(arg sim)" default="" doc="IP of controller" /> -->
+  	<!-- <arg name="robot_port" unless="$(arg sim)" default="11000" doc="Port of controller" /> -->
 	<rosparam command="load" file="$(find dars_sj705_right_moveit_config)/config/joint_names.yaml"/>
 
 	<include file="$(find dars_sj705_right_moveit_config)/launch/planning_context.launch" >
@@ -18,8 +17,8 @@
 
 	<group unless="$(arg sim)">
 		<include file="$(find itri_driver)/launch/itri_interface_streaming.launch" >
-		  <arg name="robot_ip" value="$(arg robot_ip)"/>
-		  <arg name="robot_port" value="$(arg robot_port)"/>
+		  <!-- <arg name="robot_ip" value="$(arg robot_ip)"/> -->
+		  <!-- <arg name="robot_port" value="$(arg robot_port)"/> -->
 		</include>
 		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
 	</group>

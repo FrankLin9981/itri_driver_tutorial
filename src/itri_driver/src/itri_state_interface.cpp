@@ -1,8 +1,11 @@
 #include "itri_driver/itri_state_interface.h"
+#include <itri_driver/itri_utils.h>
 #include "industrial_utils/param_utils.h"
 
 using industrial::smpl_msg_connection::SmplMsgConnection;
 using industrial_utils::param::getJointNames;
+using itri_driver::itri_utils::getJointGroups;
+using itri_driver::itri_state_interface::ITRI_RobotStateInterface;
 namespace StandardSocketPorts = industrial::simple_socket::StandardSocketPorts;
 
 namespace itri_driver
@@ -17,12 +20,12 @@ ITRI_RobotStateInterface::ITRI_RobotStateInterface()
 
 bool ITRI_RobotStateInterface::init(std::string default_ip, int default_port)
 {
-  std::string ip;
-  int port;
+  std::string ip = default_ip;
+  int port = default_port;
 
   // override IP/port with ROS params, if available
-  ros::param::param<std::string>("robot_ip_address", ip, default_ip);
-  ros::param::param<int>("~port", port, default_port);
+  // ros::param::param<std::string>("robot_ip_address", ip, default_ip);
+  // ros::param::param<int>("~port", port, default_port);
 
   // check for valid parameter values
   if (ip.empty())
@@ -46,14 +49,19 @@ bool ITRI_RobotStateInterface::init(std::string default_ip, int default_port)
 
 bool ITRI_RobotStateInterface::init(SmplMsgConnection* connection)
 {
-  std::vector<std::string> joint_names;
-  if (!getJointNames("controller_joint_names", "robot_description", joint_names))
+  // std::vector<std::string> joint_names;
+  // if (!getJointNames("controller_joint_names", "robot_description", joint_names))
+  // {
+  //   ROS_ERROR("Failed to initialize joint_names.  Aborting");
+  //   return false;
+  // }
+
+  if(this->joint_names_.size() == 0)
   {
-    ROS_ERROR("Failed to initialize joint_names.  Aborting");
-    return false;
+    ROS_ERROR("Failed to initialize joint names. Aborting");
   }
 
-  return init(connection, joint_names);
+  return init(connection, this->joint_names_);
 }
 
 bool ITRI_RobotStateInterface::init(SmplMsgConnection* connection, std::vector<std::string>& joint_names)
@@ -64,9 +72,9 @@ bool ITRI_RobotStateInterface::init(SmplMsgConnection* connection, std::vector<s
 
   this->def_comms_hndlr_.init(connection);
   this->pub_joint_control_state_ =
-          this->node_.advertise<control_msgs::FollowJointTrajectoryFeedback>("feedback_states", 1);
-  this->pub_joint_sensor_state_ = this->node_.advertise<sensor_msgs::JointState>("joint_states", 1);
-  this->pub_robot_status_ = this->node_.advertise<industrial_msgs::RobotStatus>("robot_status", 1);
+          this->node_.advertise<control_msgs::FollowJointTrajectoryFeedback>(ns_ + "/" + name_ + "/feedback_states", 1);
+  this->pub_robot_status_ = this->node_.advertise<industrial_msgs::RobotStatus>(ns_ + "/" + name_ + "/robot_status", 1);
+  this->pub_joint_sensor_state_ = this->node_.advertise<sensor_msgs::JointState>(ns_ + "/joint_states", 1);
 
   return true;
 }
@@ -117,7 +125,7 @@ void ITRI_RobotStateInterface::spinonce()
 
 void ITRI_RobotStateInterface::run()
 {
-  ros::Rate r(200);
+  ros::Rate r(50);
   while(ros::ok())
   {
     // TODO
@@ -133,18 +141,36 @@ void ITRI_RobotStateInterface::run()
 } // itri_state_interface
 } // itri_driver
 
-using itri_driver::itri_state_interface::ITRI_RobotStateInterface;
+void RSI_Instance(RobotGroup rg)
+{
+  ITRI_RobotStateInterface rsi(rg.get_ns(), rg.get_name(), rg.get_joint_names());
+  if (rsi.init(rg.get_ip(), rg.get_port()));
+  {
+    rsi.run();
+  }
+}
 
 int main(int argc, char** argv)
 {
   // initialize node
   ros::init(argc, argv, "state_interface");
 
-  // launch the default Robot State Interface connection/handlers
-  ITRI_RobotStateInterface rsi;
-  if (rsi.init())
+  std::map<int, RobotGroup> robot_groups;
+  getJointGroups("topic_list", robot_groups);
+
+  for (int i = 0; i < robot_groups.size(); i++)
   {
-    rsi.run();
+    boost::thread* thread = new boost::thread(RSI_Instance, robot_groups[i]);
   }
+
+  // launch the default Robot State Interface connection/handlers
+  // ITRI_RobotStateInterface rsi;
+  // if (rsi.init())
+  // {
+  //   rsi.run();
+  // }
+
+  ros::spin();
+
   return 0;
 }

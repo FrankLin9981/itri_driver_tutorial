@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <boost/thread/thread.hpp>
 #include "simple_message/smpl_msg_connection.h"
 #include "simple_message/simple_comms_fault_handler.h"
 #include "control_msgs/FollowJointTrajectoryFeedback.h"
@@ -34,6 +35,8 @@ class ITRI_RobotStateInterface
 public:
 
   ITRI_RobotStateInterface();
+  ITRI_RobotStateInterface(std::string ns="", std::string name="", std::vector<std::string> joints=std::vector<std::string>())
+                          : ns_(ns), name_(name), joint_names_(joints) {};
 
   /**
    * \brief Initialize robot connection using default method.
@@ -104,6 +107,8 @@ protected:
 
   SimpleCommsFaultHandler def_comms_hndlr_;
   SmplMsgConnection* connection_;
+  std::string ns_;
+  std::string name_;
   std::vector<std::string> joint_names_;
 
 };//class ITRI_RobotStateInterface

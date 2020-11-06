@@ -1,0 +1,6 @@
+<launch>
+
+  <node pkg="itri_control" name="PiH" type="peg_in_hole.py" output="screen"/>
+  <node pkg="itri_control" name="ar607_data" type="ar607_dataSubscriber.py" output="screen"/>
+
+</launch>

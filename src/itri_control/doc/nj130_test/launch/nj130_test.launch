@@ -1,0 +1,6 @@
+<launch>
+
+  <node pkg="moveit_tutorials" name="move_group_demo" type="admittance_test.py" output="screen"/>
+  <node pkg="moveit_tutorials" name="get_ft_data" type="nj130_dataSubscriber.py" output="screen"/>
+
+</launch>

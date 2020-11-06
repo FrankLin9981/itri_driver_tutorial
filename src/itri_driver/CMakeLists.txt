@@ -127,8 +127,9 @@ include_directories(include
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/action_server.cpp
 # )
-add_library(ras_client
-  src/ras_client.cpp)
+add_library(itri_robot_client
+  src/ras_client.cpp
+  src/itri_utils.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -162,25 +163,21 @@ add_executable(itri_state_interface
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries(ras_client
+target_link_libraries(itri_robot_client
   industrial_robot_client
   simple_message
   ${catkin_LIBRARIES})
+  
 target_link_libraries(moveit_action_server
   ${catkin_LIBRARIES})
 target_link_libraries(itri_trajectory_action
-  industrial_robot_client
-  simple_message
+  itri_robot_client
   ${catkin_LIBRARIES})
 target_link_libraries(itri_motion_interface
-  industrial_robot_client
-  simple_message
-  ras_client
+  itri_robot_client
   ${catkin_LIBRARIES})
 target_link_libraries(itri_state_interface
-  industrial_robot_client
-  simple_message
-  ras_client
+  itri_robot_client
   ${catkin_LIBRARIES})
 
 

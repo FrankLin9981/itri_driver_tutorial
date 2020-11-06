@@ -1,0 +1,41 @@
+<launch>
+
+	<group ns="left">
+		<include file="$(find dars_sj705_right_moveit_config)/launch/planning_context.launch" >
+			<arg name="load_robot_description" value="true" />
+		</include>
+
+		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen">
+			<remap from="joint_states" to="right_arm_controller/joint_states"/>
+		</node>	
+
+		<include file="$(find dars_sj705_right_moveit_config)/launch/move_group.launch">
+			<arg name="publish_monitored_planning_scene" value="true" />
+		</include>
+
+		<include file="$(find dars_sj705_right_moveit_config)/launch/moveit_rviz.launch">
+			<arg name="rviz_config" value="$(find dars_sj705_right_moveit_config)/launch/moveit.rviz"/>
+		</include>
+	</group>
+
+	<group ns="right">
+		<include file="$(find dars_sj705_right_moveit_config)/launch/planning_context.launch" >
+			<arg name="load_robot_description" value="true" />
+		</include>
+
+		<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen">
+			<remap from="joint_states" to="right_arm_controller/joint_states"/>
+		</node>	
+
+		<include file="$(find dars_sj705_right_moveit_config)/launch/move_group.launch">
+			<arg name="publish_monitored_planning_scene" value="true" />
+		</include>
+
+		<include file="$(find dars_sj705_right_moveit_config)/launch/moveit_rviz.launch">
+			<arg name="rviz_config" value="$(find dars_sj705_right_moveit_config)/launch/moveit.rviz"/>
+		</include>
+	</group>
+
+	<include file="$(find itri_driver)/launch/itri_interface_streaming.launch" />
+
+</launch>

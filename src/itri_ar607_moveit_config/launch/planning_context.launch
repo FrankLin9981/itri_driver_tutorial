@@ -10,7 +10,7 @@
 
   <!-- Load universal robot description format (URDF) -->
   <param if="$(arg load_robot_description)" name="$(arg robot_description)" command="xacro --inorder  '$(find itri_support)/urdf/ar607.urdf.xacro'"/>
-  <param if="$(arg sensor_used)" name="$(arg robot_description)" command="xacro --inorder  '$(find itri_support)/urdf/ar607_in_hand.urdf.xacro'"/>
+  <param if="$(arg sensor_used)" name="$(arg robot_description)" command="xacro --inorder  '$(find itri_support)/urdf/ar607.sensor.urdf.xacro'"/>
 
   <!-- The semantic description that corresponds to the URDF -->
   <param name="$(arg robot_description)_semantic" textfile="$(find itri_ar607_moveit_config)/config/itri_ar607.srdf" />

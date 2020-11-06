@@ -1,0 +1,6 @@
+<launch>
+
+  <node pkg="moveit_tutorials" name="grasping_demo" type="grasping_demo.py" output="screen"/>
+  <node pkg="moveit_tutorials" name="ar607_data" type="ar607_dataSubscriber.py" output="screen"/>
+
+</launch>
